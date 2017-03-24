@@ -4,10 +4,10 @@ namespace Symplify\SymbioticController\Template;
 
 use Nette\Application\UI\ITemplateFactory;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
-use Symplify\SymbioticController\Application\PresenterHelper;
+use Symplify\SymbioticController\Adapter\Nette\Application\PresenterHelper;
 use Symplify\SymbioticController\Contract\Template\TemplateRendererInterface;
 
-final class TemplateRenderer implements TemplateRendererInterface
+final class LatteTemplateRenderer implements TemplateRendererInterface
 {
     /**
      * @var TemplateFactory|ITemplateFactory

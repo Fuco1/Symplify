@@ -1,10 +1,12 @@
 {
     "name": "symplify/symbiotic-controller",
+    "description": "Invocable independent controllers for all frameworks.",
     "require": {
         "php": "^7.1",
         "nette/di": "^2.4",
         "nette/application": "^2.4",
-        "odbav-to/presenter-route": "@dev"
+        "symplify/symfony-event-dispatcher": "^1.4",
+        "odbav-to/presenter-route": "^0.1.1"
     },
     "autoload": {
         "psr-4": {

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Symplify\SymbioticController\DI;
+namespace Symplify\SymbioticController\Adapter\Nette\DI;
 
 use Nette\Application\UI\ITemplateFactory;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Symplify\SymbioticController\Template\TemplateRenderer;
+use Symplify\SymbioticController\Template\LatteTemplateRenderer;
 
-final class IndependentSingleActionPresenterExtension extends CompilerExtension
+final class SymbioticControllerExtension extends CompilerExtension
 {
     public function loadConfiguration(): void
     {
@@ -20,7 +20,7 @@ final class IndependentSingleActionPresenterExtension extends CompilerExtension
 
         if ($containerBuilder->findByType(ITemplateFactory::class)) {
             $containerBuilder->addDefinition($this->prefix('templateRenderer'))
-                ->setClass(TemplateRenderer::class);
+                ->setClass(LatteTemplateRenderer::class);
         }
     }
 }

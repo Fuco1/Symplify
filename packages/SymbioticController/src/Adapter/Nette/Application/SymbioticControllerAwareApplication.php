@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Symplify\SymbioticController\Application;
+namespace Symplify\SymbioticController\Adapter\Nette\Application;
 
 use Exception;
 use Nette;
@@ -26,7 +26,7 @@ use Symplify\SymfonyEventDispatcher\Adapter\Nette\Event\PresenterCreatedEvent;
 use Symplify\SymfonyEventDispatcher\Adapter\Nette\Event\RequestRecievedEvent;
 use Throwable;
 
-final class InvokablePresenterAwareApplication extends Application
+final class SymbioticControllerAwareApplication extends Application
 {
     /**
      * @var int
