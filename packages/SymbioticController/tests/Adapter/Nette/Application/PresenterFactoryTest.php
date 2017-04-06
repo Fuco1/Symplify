@@ -13,17 +13,13 @@ final class PresenterFactoryTest extends TestCase
      */
     private $presenterFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $container = (new ContainerFactory)->create();
         $this->presenterFactory = $container->getByType(PresenterFactory::class);
     }
 
-
-    /**
-     * @todo
-     */
-    public function test()
+    public function test(): void
     {
 //        $this->presenterFactory->createPresenter();
         // ...

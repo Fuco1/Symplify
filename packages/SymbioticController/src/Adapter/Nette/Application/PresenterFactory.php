@@ -6,7 +6,9 @@ use Nette;
 use Nette\Application\InvalidPresenterException;
 use Nette\Application\IPresenter;
 use Nette\Application\IPresenterFactory;
+use Nette\Application\UI\Presenter;
 use Nette\DI\Container;
+use ReflectionClass;
 
 final class PresenterFactory implements IPresenterFactory
 {
@@ -33,7 +35,6 @@ final class PresenterFactory implements IPresenterFactory
         $this->container = $container;
     }
 
-
     /**
      * @param string $name
      *
@@ -41,18 +42,17 @@ final class PresenterFactory implements IPresenterFactory
      * @throws Nette\InvalidArgumentException
      * @throws InvalidPresenterException
      */
-    public function createPresenter($name)
+    public function createPresenter(string $name)
     {
         $presenterClass = $this->getPresenterClass($name);
         $presenter = $this->container->createInstance($presenterClass);
 
-        if ($presenter instanceof Nette\Application\UI\Presenter) {
+        if ($presenter instanceof Presenter) {
             $this->container->callInjects($presenter);
         }
 
         return $presenter;
     }
-
 
     /**
      * Generates and checks presenter class name.
@@ -61,28 +61,28 @@ final class PresenterFactory implements IPresenterFactory
      *
      * @throws InvalidPresenterException
      */
-    public function getPresenterClass(&$presenterName): string
+    public function getPresenterClass(string &$presenterName): string
     {
         if (isset($this->cache[$presenterName])) {
             return $this->cache[$presenterName];
         }
 
-        if (!class_exists($presenterName) && (!is_string($presenterName) || !Nette\Utils\Strings::match($presenterName, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*\z#'))) {
+        if (! class_exists($presenterName) && (! is_string($presenterName) || ! Nette\Utils\Strings::match($presenterName, '#^[a-zA-Z\x7f-\xff][a-zA-Z0-9\x7f-\xff:]*\z#'))) {
             throw new InvalidPresenterException("Presenter name must be alphanumeric string, '$presenterName' is invalid.");
         }
 
         $class = $this->formatPresenterClass($presenterName);
 
-        if (!class_exists($class) && class_exists($presenterName)) {
+        if (! class_exists($class) && class_exists($presenterName)) {
             $class = $presenterName;
             $presenterName = $this->unformatPresenterClass($presenterName);
         }
 
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             throw new InvalidPresenterException("Cannot load presenter '$presenterName', class '$class' was not found.");
         }
 
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
         $class = $reflection->getName();
 
         if ($reflection->isAbstract()) {
@@ -93,7 +93,6 @@ final class PresenterFactory implements IPresenterFactory
 
         return $class;
     }
-
 
     /**
      * @param string[] $mapping
@@ -114,7 +113,6 @@ final class PresenterFactory implements IPresenterFactory
         }
     }
 
-
     /**
      * Formats presenter class name from its name.
      *
@@ -133,7 +131,6 @@ final class PresenterFactory implements IPresenterFactory
         return $mapping[0];
     }
 
-
     /**
      * Formats presenter name from class name.
      *
@@ -148,6 +145,6 @@ final class PresenterFactory implements IPresenterFactory
                     . preg_replace("#$mapping[1]#iA", '$1:', $matches[1]) . $matches[3];
             }
         }
-        return NULL;
+
     }
 }
